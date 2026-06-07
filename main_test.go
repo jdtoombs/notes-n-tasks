@@ -5,7 +5,7 @@ import (
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"wsl-task-buddy/store"
+	"notes-n-tasks/store"
 )
 
 func TestToggleContext(t *testing.T) {

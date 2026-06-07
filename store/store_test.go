@@ -460,11 +460,12 @@ func TestNotesDirDefaultCreatesDirectory(t *testing.T) {
 	t.Setenv("HOME", home)
 	t.Setenv("USERPROFILE", home)
 	t.Setenv(NotesDirEnv, "")
+	t.Setenv(LegacyNotesDirEnv, "")
 	got, err := NotesDir()
 	if err != nil {
 		t.Fatalf("NotesDir error: %v", err)
 	}
-	want := filepath.Join(home, ".task-buddy", "notes")
+	want := filepath.Join(home, ".notes-n-tasks", "notes")
 	if got != want {
 		t.Fatalf("NotesDir = %q, want %q", got, want)
 	}
@@ -477,9 +478,29 @@ func TestNotesDirDefaultCreatesDirectory(t *testing.T) {
 	}
 }
 
+func TestNotesDirUsesLegacyDefaultWhenItAlreadyExists(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	t.Setenv("USERPROFILE", home)
+	t.Setenv(NotesDirEnv, "")
+	t.Setenv(LegacyNotesDirEnv, "")
+	legacy := filepath.Join(home, ".task-buddy", "notes")
+	if err := os.MkdirAll(legacy, 0755); err != nil {
+		t.Fatalf("create legacy notes dir: %v", err)
+	}
+	got, err := NotesDir()
+	if err != nil {
+		t.Fatalf("NotesDir error: %v", err)
+	}
+	if got != legacy {
+		t.Fatalf("NotesDir = %q, want legacy path %q", got, legacy)
+	}
+}
+
 func TestNotesDirEnvOverrideCreatesDirectory(t *testing.T) {
 	custom := filepath.Join(t.TempDir(), "custom-notes")
 	t.Setenv(NotesDirEnv, custom)
+	t.Setenv(LegacyNotesDirEnv, "")
 	got, err := NotesDir()
 	if err != nil {
 		t.Fatalf("NotesDir error: %v", err)

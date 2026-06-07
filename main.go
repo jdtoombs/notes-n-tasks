@@ -1,4 +1,4 @@
-// task-buddy - fullscreen TUI task tracker with vim motions, date navigation, and timers
+// notes-n-tasks - fullscreen TUI notes and task tracker with vim motions, date navigation, and timers
 package main
 
 import (
@@ -16,7 +16,7 @@ import (
 	"github.com/charmbracelet/glamour"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/mattn/go-runewidth"
-	"wsl-task-buddy/store"
+	"notes-n-tasks/store"
 )
 
 type mode int

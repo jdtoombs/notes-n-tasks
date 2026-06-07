@@ -1,4 +1,4 @@
-// store provides shared task data types and persistence for the tasks app
+// store provides shared task and notes data types and persistence
 package store
 
 import (
@@ -21,7 +21,8 @@ const (
 	TaskContextPersonal = "personal"
 	TaskContextWork     = "work"
 
-	NotesDirEnv = "TASK_BUDDY_NOTES_DIR"
+	NotesDirEnv       = "NOTES_N_TASKS_NOTES_DIR"
+	LegacyNotesDirEnv = "TASK_BUDDY_NOTES_DIR"
 )
 
 func NormalizeTaskContext(context string) string {
@@ -76,11 +77,14 @@ func DataPath() (string, error) {
 func NotesDir() (string, error) {
 	path := strings.TrimSpace(os.Getenv(NotesDirEnv))
 	if path == "" {
+		path = strings.TrimSpace(os.Getenv(LegacyNotesDirEnv))
+	}
+	if path == "" {
 		home, err := os.UserHomeDir()
 		if err != nil {
 			return "", fmt.Errorf("cannot determine home directory: %w", err)
 		}
-		path = filepath.Join(home, ".task-buddy", "notes")
+		path = defaultNotesDir(home)
 	} else if path == "~" || strings.HasPrefix(path, "~/") || strings.HasPrefix(path, "~\\") {
 		home, err := os.UserHomeDir()
 		if err != nil {
@@ -107,6 +111,17 @@ func NotesDir() (string, error) {
 		return "", fmt.Errorf("notes path is not a directory: %s", abs)
 	}
 	return abs, nil
+}
+
+func defaultNotesDir(home string) string {
+	newPath := filepath.Join(home, ".notes-n-tasks", "notes")
+	legacyPath := filepath.Join(home, ".task-buddy", "notes")
+	if _, err := os.Stat(newPath); os.IsNotExist(err) {
+		if info, legacyErr := os.Stat(legacyPath); legacyErr == nil && info.IsDir() {
+			return legacyPath
+		}
+	}
+	return newPath
 }
 
 func Load(path string) (TaskData, error) {

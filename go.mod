@@ -1,4 +1,4 @@
-module wsl-task-buddy
+module notes-n-tasks
 
 go 1.24.0
 

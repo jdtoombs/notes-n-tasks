@@ -1,6 +1,6 @@
-# task-buddy
+# notes-n-tasks
 
-Fullscreen TUI task tracker with vim motions and date-based navigation.
+Fullscreen TUI for Markdown notes, tasks, timers, and date-based planning.
 
 ## Tech Stack
 - Go 1.24+
@@ -11,8 +11,8 @@ Fullscreen TUI task tracker with vim motions and date-based navigation.
 
 ## Build & Run
 ```
-go build -o task-buddy .
-./task-buddy
+go build -o notes-n-tasks .
+./notes-n-tasks
 ```
 
 ## Architecture
@@ -29,7 +29,7 @@ Root-level `main.go` using the Elm architecture via Bubble Tea, with `store/` pa
 
 ## Data
 - Tasks persist to `~/.tasks.json` as a flat JSON array
-- Notes persist as Markdown files and folders under `~/.task-buddy/notes` by default; `TASK_BUDDY_NOTES_DIR` overrides this location
+- Notes persist as Markdown files and folders under `~/.notes-n-tasks/notes` by default; an existing legacy `~/.task-buddy/notes` directory is used when present; `NOTES_N_TASKS_NOTES_DIR` overrides this location, with `TASK_BUDDY_NOTES_DIR` supported as a legacy override
 - Each task has: id, title, done (bool), date (YYYY-MM-DD), context (work/personal), notified (bool), entries (time tracking), carried_from_id (optional, tracks carry-forward origin)
 - Tasks are filtered by the currently viewed date and active context (work/personal)
 - Missing/empty task context is treated as personal for existing data; app starts in work context
