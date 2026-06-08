@@ -64,7 +64,7 @@ The app starts in the work list; existing tasks without a saved list are treated
 | `n` | Return to tasks |
 | `j` / `k` / arrows | Move cursor up/down |
 | `enter` / `l` | Enter folder or edit selected note in `nvim` |
-| `h` / `backspace` | Go to parent folder |
+| `h` / `-` / `backspace` | Go to parent folder |
 | `g` / `G` | Jump to top/bottom |
 | `a` | Create Markdown note (`.md` is added when omitted) |
 | `A` | Create folder |

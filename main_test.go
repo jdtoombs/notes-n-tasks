@@ -113,6 +113,23 @@ func TestToggleNotesViewWithN(t *testing.T) {
 	}
 }
 
+func TestMinusGoesToParentFolderInNotes(t *testing.T) {
+	root := t.TempDir()
+	if _, err := store.CreateNotesFolder(root, "", "folder"); err != nil {
+		t.Fatalf("create folder: %v", err)
+	}
+	if _, err := store.CreateNotesFolder(root, "folder", "child"); err != nil {
+		t.Fatalf("create child folder: %v", err)
+	}
+	m := model{view: viewNotes, notesRoot: root, notesDir: "folder/child", mode: modeNormal, activeContext: store.TaskContextWork}
+
+	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'-'}})
+	m = updated.(model)
+	if m.notesDir != "folder" {
+		t.Fatalf("expected parent folder, got %q", m.notesDir)
+	}
+}
+
 func TestNotesDeleteDetectsNonEmptyFolder(t *testing.T) {
 	root := t.TempDir()
 	if _, err := store.CreateNotesFolder(root, "", "folder"); err != nil {

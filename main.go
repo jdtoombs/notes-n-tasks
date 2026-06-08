@@ -518,7 +518,7 @@ func (m model) updateNotesNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			m.noteCursor = m.noteRowCount() - 1
 			m.refreshNotePreview()
 		}
-	case "h", "backspace", "left":
+	case "h", "-", "backspace", "left":
 		m.goNotesParent()
 	case "enter", "l", "right":
 		return m.openSelectedNoteEntry()
@@ -1191,7 +1191,7 @@ func (m model) notesHelpText() string {
 		"j/k           move up/down",
 		"g/G           top/bottom",
 		"enter/l       enter folder or edit note",
-		"h/backspace   parent folder",
+		"h/-/backspace parent folder",
 		"a             create Markdown note",
 		"A             create folder",
 		"d/x           delete file/folder",
